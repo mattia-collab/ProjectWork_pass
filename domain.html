@@ -4,10 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Password Generator</title>
+    <!-- Scripts -->
+    <script src="script/main.js"></script>
+    <script src="script/displayerror.js"></script>
+    <script src="script/displaytable.js"></script>
+    <!-- Style -->
     <link rel="stylesheet" href="output.css" />
-    <script src="script.js"></script>
-    <script src="wordlist.js"></script>
   </head>
+
   <body class="flex flex-col items-center min-w-fit">
     <nav
       id="navigation"
@@ -145,8 +149,6 @@
       </div>
     </div>
 
-    <script src="table.js"></script>
-    <script src="display.js"></script>
     <script>
       async function generate() {
         // Read the input
