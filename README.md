@@ -11,5 +11,6 @@ This project is a front-end only web application that acts as a simple *password
 
 ## Authors
 - Andrea Croci Angelini
+- Filippo Domeniconi
 - Kimberly Gabriele
 - Mattia Francesco D'Angelo
