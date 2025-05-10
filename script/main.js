@@ -120,7 +120,8 @@ function copyToClipboard(text) {
 }
 
 function randInt(min, max) {
-  return min + (Math.floor(Math.random() * 1e9) % (max - min))
+  random = crypto.getRandomValues(new Uint32Array(1))[0]
+  return min + (random) % (max - min)
 }
 
 function randChoice(collection) {
