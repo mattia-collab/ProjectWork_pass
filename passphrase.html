@@ -7,7 +7,7 @@
     <!-- Scripts -->
     <script src="script/main.js"></script>
     <script src="script/displayerror.js"></script>
-    <script src="script/wordlist.js"></script>
+    <script src="script/w20000.js"></script>
     <!-- Style -->
     <link rel="stylesheet" href="output.css" />
   </head>
@@ -67,6 +67,7 @@
       </a>
     </nav>
 
+    <!-- Description -->
     <div id="content" class="flex flex-col p-4 sm:p-8 max-w-6xl">
       <h1 class="text-2xl sm:text-3xl text-blue-700 font-light">
         Passphrase generator
@@ -81,7 +82,7 @@
       </p>
 
       <hr class="my-6 text-gray-300" />
-
+      <!-- Separator style -->
       <div class="flex items-center justify-between gap-4 px-4 mb-4">
         <div>
           <h2 class="font-semibold text-gray-900">Separator style</h2>
@@ -100,7 +101,7 @@
           </select>
         </label>
       </div>
-
+      <!-- Word length -->
       <div class="flex items-center justify-between gap-4 px-4 mb-4">
         <div>
           <h2 class="font-semibold text-gray-900">Word length</h2>
@@ -113,13 +114,13 @@
             id="passwordLength"
             name="length"
             type="number"
-            value="3"
+            value="4"
             placeholder="0"
             class="flex max-w-14 pl-2 py-1.5 text-center border border-gray-500 rounded-md focus-within:outline-blue-600"
           />
         </label>
       </div>
-
+      <!-- Capital letter toggle -->
       <div class="flex items-center justify-between gap-4 px-4 mb-4">
         <div>
           <h2 class="font-semibold text-gray-900">Capital letter</h2>
@@ -137,7 +138,7 @@
           ></div>
         </label>
       </div>
-
+      <!-- All caps toggle -->
       <div class="flex items-center justify-between gap-4 px-4 mb-4">
         <div>
           <h2 class="font-semibold text-gray-900">Allcaps</h2>
@@ -155,7 +156,7 @@
           ></div>
         </label>
       </div>
-
+      <!-- Leet Speak toggle -->
       <div class="flex items-center justify-between gap-4 px-4 mb-4">
         <div>
           <h2 class="font-semibold text-gray-900">Leet speak</h2>
@@ -173,12 +174,12 @@
           ></div>
         </label>
       </div>
-
       <hr class="mt-4 mb-6 text-gray-300" />
-
+      <!-- Password display -->
       <div class="flex">
         <div
           id="passwordText"
+          onclick="copyPassword()"
           class="flex w-full sm:justify-center p-1.5 border border-blue-500 text-gray-300 rounded-l-md"
         >
           Generated Password
@@ -195,7 +196,7 @@
           </span>
         </div>
       </div>
-
+      <!-- Error display -->
       <div
         id="errorDisplay"
         class="hidden items-center gap-4 p-5 mt-4 rounded-md"
@@ -203,11 +204,11 @@
         <img id="errorIcon" class="w-8 h-8" src="icon/error.svg" />
         <div id="errorDescription"></div>
       </div>
-
+      <!-- Generate Button -->
       <div class="flex justify-center mt-4">
         <button
           id="generateButton"
-          onclick="generate();"
+          onclick="generatePassphrase();"
           class="flex justify-center py-2 px-4 sm:min-w-80 gap-2 bg-blue-700 text-white font-semibold hover:bg-blue-600 rounded-md cursor-pointer"
         >
           Generate
@@ -218,96 +219,98 @@
 
     <script>
       // Settings
-      const passwordSeparator = document.getElementById('passwordSeparator')
-      const passwordLength = document.getElementById('passwordLength')
-      const toggleCapital = document.getElementById('toggleCapital')
-      const toggleAllcaps = document.getElementById('toggleAllcaps')
-      const toggleLeet = document.getElementById('toggleLeet')
+      const passwordSeparator = document.getElementById("passwordSeparator");
+      const passwordLength = document.getElementById("passwordLength");
+      const toggleCapital = document.getElementById("toggleCapital");
+      const toggleAllcaps = document.getElementById("toggleAllcaps");
+      const toggleLeet = document.getElementById("toggleLeet");
 
       // Automatic generation on change
-      passwordSeparator.addEventListener('change', generate)
-      passwordLength.addEventListener('change', generate)
-      toggleCapital.addEventListener('change', generate)
-      toggleAllcaps.addEventListener('change', generate)
-      toggleLeet.addEventListener('change', generate)
+      passwordSeparator.addEventListener("change", generatePassphrase);
+      passwordLength.addEventListener("change", generatePassphrase);
+      toggleCapital.addEventListener("change", generatePassphrase);
+      toggleAllcaps.addEventListener("change", generatePassphrase);
+      toggleLeet.addEventListener("change", generatePassphrase);
 
       // Password Copy
-      document.getElementById('passwordText').addEventListener('click', () => {
-        password = passwordText.innerText
+      function copyPassword() {
+        const passwordText = document.getElementById("passwordText");
+        const password = passwordText.innerText;
         if (
-          password != 'Generated Password' &&
-          password != 'Copied to the Clipboard'
+          password != "Generated Password" &&
+          password != "Copied to the Clipboard"
         ) {
-          passwordText.innerText = 'Copied to the Clipboard'
-          copyToClipboard(password)
+          passwordText.innerText = "Copied to the Clipboard";
+          copyToClipboard(password);
           setTimeout(() => {
-            passwordText.innerText = password
-          }, 700)
+            passwordText.innerText = password;
+          }, 700);
         }
-      })
+      }
 
-      async function generate() {
-        let separator = passwordSeparator.value
-        let wordlength = passwordLength.value
-        let password = ''
+      // Passphrase Generation
+      async function generatePassphrase() {
+        let separator = passwordSeparator.value;
+        let wordlength = passwordLength.value;
+        let password = "";
 
         // Error management and display.
         if (wordlength <= 0) {
-          setError('icon/error.svg', 'red', 'Error:', [
-            '• The selected word length is invalid.',
-          ])
-          setPassword(1, 'red', 'Generated Password')
-          return
+          setError("icon/error.svg", "red", "Error:", [
+            "• The selected word length is invalid.",
+          ]);
+          setPassword(1, "red", "Generated Password");
+          return;
         }
 
         // Password generation.
         for (let i = 0; i < wordlength; i++) {
-          let word = randChoice(wordlist)
+          let word = randChoice(wordlist);
           // Apply modifiers
           if (toggleLeet.checked) {
             word = word
-              .replace('o', '0')
-              .replace('e', '3')
-              .replace('a', '4')
-              .replace('s', '5')
+              .replace("o", "0")
+              .replace("e", "3")
+              .replace("a", "4")
+              .replace("s", "5");
           }
           if (toggleAllcaps.checked) {
-            word = word.toUpperCase()
+            word = word.toUpperCase();
           }
           if (toggleCapital.checked) {
-            word = word[0].toUpperCase() + word.substring(1)
+            word = word[0].toUpperCase() + word.substring(1);
           }
           // Add to the passphrase
           if (i === 0) {
-            password = word
+            password = word;
           } else {
-            password += separator + word
+            password += separator + word;
           }
         }
 
         // Warning management.
-        let description = []
+        let description = [];
         // Check strength & safety
-        if (checkEntropy_charset(password) < 76) {
-          description.push('• Password strength: Low.')
+        if (checkEntropy(password) < 69) {
+          description.push("• Password strength: Low.");
         } else {
           // Check the API only when the entropy is high enough to
           // avoid sending too many queries to ihavebeenpwned
-          if ((await checkPwned(password)) > 0) {
-            description.push('• This password has been found in a breach.')
+          if ((await checkPasswordCompromised(password)) > 0) {
+            description.push("• This password has been found in a breach.");
           }
         }
 
         // Password display.
         if (description.length) {
-          setError('icon/warning.svg', 'yellow', 'Warning:', description)
-          setPassword(description.length, 'yellow', password)
+          setError("icon/warning.svg", "yellow", "Warning:", description);
+          setPassword(description.length, "yellow", password);
         } else {
-          setError('icon/success.svg', 'green', 'Password generated.', [
-            '• Password strength: High.',
-            '• No breaches found.',
-          ])
-          setPassword('0', 'blue', password)
+          setError("icon/success.svg", "green", "Password generated.", [
+            "• Password strength: High.",
+            "• No breaches found.",
+          ]);
+          setPassword("0", "blue", password);
         }
       }
     </script>
