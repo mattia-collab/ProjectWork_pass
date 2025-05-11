@@ -3,8 +3,44 @@
 
 let __DISPLAY_COLOR = {
   password: "blue",
+  hash: "blue",
   error: "red",
 };
+
+function setHash(color, hash) {
+  const SHA256 = document.getElementById("SHA256");
+  const SHA512 = document.getElementById("SHA512");
+  // Remove previous border color
+  SHA256.classList.remove(`border-${__DISPLAY_COLOR.hash}-600`);
+  SHA512.classList.remove(`border-${__DISPLAY_COLOR.hash}-600`);
+  SHA256.classList.remove(`hover:bg-${__DISPLAY_COLOR.hash}-100`);
+  SHA512.classList.remove(`hover:bg-${__DISPLAY_COLOR.hash}-100`);
+  __DISPLAY_COLOR.hash = color;
+
+  // Sets up the display classes
+  if (hash == null) {
+    SHA256.classList.remove("text-gray-900");
+    SHA512.classList.remove("text-gray-900");
+    SHA256.classList.add("text-gray-300");
+    SHA512.classList.add("text-gray-300");
+    SHA256.value = "SHA-256";
+    SHA512.value = "SHA-512";
+  } else {
+    SHA256.classList.remove("text-gray-300");
+    SHA512.classList.remove("text-gray-300");
+    SHA256.classList.add("text-gray-900");
+    SHA512.classList.add("text-gray-900");
+    SHA256.value = hash[0];
+    SHA512.value = hash[1];
+    // Add hover
+    SHA256.classList.add(`hover:bg-${color}-100`);
+    SHA512.classList.add(`hover:bg-${color}-100`);
+  }
+
+  // Applies the changes to the page elements
+  SHA256.classList.add(`border-${color}-600`);
+  SHA512.classList.add(`border-${color}-600`);
+}
 
 /* Tailwind */
 // "bg-red-100 bg-yellow-100 bg-green-100 bg-blue-100"

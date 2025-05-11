@@ -82,7 +82,7 @@
 
       <hr class="my-6 text-gray-300" />
       <!-- Password input -->
-      <div class="flex items-center justify-between gap-4 px-4 mb-4">
+      <div class="flex items-center justify-between gap-4 px-4">
         <div class="flex flex-col w-full">
           <label class="mb-1 font-semibold text-gray-900">
             Pasword to verify
@@ -97,7 +97,7 @@
         </div>
       </div>
       <!-- Test button -->
-      <div class="flex justify-center mb-4">
+      <div class="flex justify-center mt-4">
         <button
           id="generateButton"
           onclick="RunTest();"
@@ -107,7 +107,22 @@
           <img class="w-6 h-6" src="icon/reload.svg" />
         </button>
       </div>
-      <hr class="text-gray-300" />
+      <hr class="my-6 text-gray-300" />
+      <!-- Hash display -->
+      <div class="flex flex-row">
+        <input
+          disabled
+          id="SHA256"
+          value="SHA-256"
+          class="flex w-full sm:justify-center p-1.5 border border-blue-600 text-gray-300 rounded-l-md"
+        />
+        <input
+          disabled
+          id="SHA512"
+          value="SHA-512"
+          class="flex w-full sm:justify-center p-1.5 border border-blue-600 text-gray-300 rounded-r-md border-l-0"
+        />
+      </div>
       <!-- Error display -->
       <div
         id="errorDisplay"
@@ -196,8 +211,13 @@
           setError("icon/error.svg", "red", "Error:", [
             "• The password field is empty.",
           ]);
+          setHash("red", null);
           return;
         }
+
+        // Generate useful hashes
+        const SHA256 = await hash("SHA-256", password);
+        const SHA512 = await hash("SHA-512", password);
 
         description.push(
           `• The entropy of the password is: ${Math.floor(entropia)} bits`
@@ -215,10 +235,11 @@
         }
         if (description.length > 1) {
           setError("icon/warning.svg", "yellow", "Warning:", description);
-          return;
+          setHash("yellow", ["SHA-256: " + SHA256, "SHA-512: " + SHA512]);
         } else {
           description.push("• This password has not been compromised.");
           setError("icon/success.svg", "green", "Success.", description);
+          setHash("blue", ["SHA-256: " + SHA256, "SHA-512: " + SHA512]);
         }
       }
     </script>
