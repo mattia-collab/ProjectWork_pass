@@ -1,6 +1,7 @@
 # Password Utility Tool: Documentation
 
-Written by Andrea Croci Angelini.
+###### written by Andrea Croci Angelini.
+
 Read time: ~5-10 minutes
 
 ## Description
