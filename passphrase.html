@@ -297,11 +297,7 @@
             word = word[0].toUpperCase() + word.substring(1);
           }
           // Add to the passphrase
-          if (i === 0) {
-            password = word;
-          } else {
-            password += separator + word;
-          }
+          password += (i === 0) ? word : separator + word;
         }
 
         // Generate useful hashes

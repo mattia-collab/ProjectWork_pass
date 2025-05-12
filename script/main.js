@@ -1,6 +1,6 @@
 // Funzione per calcolare l'entropia in bit di una stringa
 // https://github.com/dluppoli/EntropiaPassword/blob/main/README.md
-// by Filippo Domeniconi
+// by Filippo Domeniconi, Mattia D'Angelo
 function checkEntropy(password) {
   // Definisci l'alfabeto disponibile per la password
   const alfabeto = {
@@ -56,7 +56,7 @@ function checkShannonEntropy(password) {
 // Funzione per alfabetizzare una stringa di byte (hex string) utilizzando
 // un set di 85 caratteri stampabili differenti.
 // https://en.wikipedia.org/wiki/Ascii85
-// by Andrea Croci Angelini
+// by Andrea Croci Angelini, Kimberly Gabriele
 function base85(hexstring) {
   // Set of printable type-able characters
   const set = {
@@ -86,7 +86,7 @@ function base85(hexstring) {
 
 // Funzione helper per generare l'hash di una stringa dato un algoritmo
 // algorithm: SHA-1, SHA-256, SHA-384, SHA-512
-// by Andrea Croci Angelini
+// by Andrea Croci Angelini, Mattia D'Angelo
 async function hash(algorithm, string) {
   // Converts the string to a format that can be hashed
   const buffer = new TextEncoder().encode(string);
@@ -100,7 +100,7 @@ async function hash(algorithm, string) {
 }
 
 // Funzione per verificare se la password è stata compromessa
-// by Filippo Domeniconi
+// by Filippo Domeniconi, Mattia D'Angelo
 async function checkPasswordCompromised(password) {
   // SHA-1 della password
   const digest = (await hash("SHA-1", password)).toUpperCase();
@@ -133,7 +133,10 @@ async function checkPasswordCompromised(password) {
 // libreria sicura a livello crittografico.
 // by Andrea Croci Angelini
 function randInt(min, max) {
-  random = crypto.getRandomValues(new Uint32Array(1))[0];
+  // CAUTION: This is not a real seed, or it would be unsafe
+  seed = Math.floor(Math.random() * 100) % 10;
+  // Generate 10 high entropy random values and pick one at random.
+  random = crypto.getRandomValues(new Uint32Array(10))[seed];
   return min + (random % (max - min));
 }
 // Funzione helper per la scelta di un elemento casuale da una collezione

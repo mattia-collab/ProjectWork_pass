@@ -1,6 +1,6 @@
 // Funzioni per la gestione della tabella delle password le funzionalita
 // di mostra, nascondi, elimina
-// by Andrea Croci Angelini
+// by Kimberly Gabriele, Andrea Croci Angelini
 
 function tableRow(id, password, domain) {
   let tr = `<tr id="${id}">`
