@@ -194,7 +194,7 @@
 
         // Generate a domain password
         let digest = masterPassword;
-        for (let i = 0; i < 999; i++) {
+        for (let i = 0; i < 4999; i++) {
           digest = await hash("SHA-256", digest + domainName);
         }
         // Converts the raw bytes into base85
